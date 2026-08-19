@@ -2,25 +2,30 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import ErrorModal from "@/components/error_modal";
 import Footer from "@/components/footer";
 
 export default function Home() {
+  const router = useRouter(); // create router instance 
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [invalid, setInvalid] = useState(false);
   const [triggermodal, setTriggerModal] = useState(false);
-  let [modalTitle, setModalTitle] = useState("");
-  let [modalText, setModalText] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalText, setModalText] = useState("");
 
   function validateCreds(e: FormEvent) {
     e.preventDefault();
 
-    // api validation logic here
+    // api validation logic and variable assignment here
+    setInvalid(false); // example value
+    sessionStorage.setItem("username", "steve") // example value
 
     if (!invalid) {
-      // redirect
+      router.push("/dashboard"); // redirect to dashboard 
     } else {
       setModalTitle("Invalid Credentials");
       setModalText("The email or password you entered is incorrect. Please try again.");
