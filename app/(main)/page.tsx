@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import axios, { AxiosResponse } from "axios";
 
 import ErrorModal from "@/components/error_modal";
 import Footer from "@/components/footer";
@@ -12,23 +13,39 @@ export default function Home() {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [invalid, setInvalid] = useState(false);
   const [triggermodal, setTriggerModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalText, setModalText] = useState("");
 
-  function validateCreds(e: FormEvent) {
+  let response: AxiosResponse<any, any>; // declare response variable
+
+  async function validateCreds(e: FormEvent) {
     e.preventDefault();
 
-    // api validation logic and variable assignment here
-    setInvalid(false); // example value
-    sessionStorage.setItem("username", "steve") // example value
+    localStorage.clear();
 
-    if (!invalid) {
-      router.push("/dashboard"); // redirect to dashboard 
-    } else {
-      setModalTitle("Invalid Credentials");
-      setModalText("The email or password you entered is incorrect. Please try again.");
+    try {
+      response = await axios({
+        method: 'POST',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/signin`,
+        responseType: 'json',
+        data: {
+          email: email,
+          password: password
+        }
+      })
+
+      if (response.status == 200) {
+        localStorage.setItem("username", response.data.username) 
+        router.push("/dashboard"); // redirect to dashboard 
+      } else {
+        setModalTitle("Invalid Credentials");
+        setModalText("The email or password you entered is incorrect. Please try again.");
+        setTriggerModal(true);
+      }
+    } catch (error) {
+      setModalTitle("Unable to Sign In");
+      setModalText("An error occured trying to sign in. Please try again.");
       setTriggerModal(true);
     }
   }

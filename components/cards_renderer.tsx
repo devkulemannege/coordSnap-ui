@@ -4,14 +4,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface coordinates {
-  id: string;
-  name: string;
-  description?: string;
-  dimension: string;
-  x: number;
-  y: number;
-  z: number;
-  image?: number;
+    id: string
+    seed: string,
+    name: string,
+    description? :string,
+    dimension: string,
+    x: number,
+    y: number,
+    z: number,
+    image?: number
 }
 
 interface CardsRendererProps {
@@ -35,7 +36,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
           <button
             type="button"
             onClick={handleAddNew}
-            className="group min-h-[220px] bg-zinc-800/30 hover:bg-zinc-800/60 border-2 border-dashed border-zinc-700/80 hover:border-emerald-500/60 rounded-3xl p-6 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer"
+            className="group min-h-55 bg-zinc-800/30 hover:bg-zinc-800/60 border-2 border-dashed border-zinc-700/80 hover:border-emerald-500/60 rounded-3xl p-6 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer"
           >
             <div className="w-12 h-12 rounded-2xl bg-zinc-800 group-hover:bg-emerald-500/10 border border-zinc-700/80 group-hover:border-emerald-500/30 text-zinc-400 group-hover:text-emerald-400 flex items-center justify-center text-xl transition mb-3">
               +
@@ -51,7 +52,6 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
           {/* 2. Existing Coordinate Cards */}
           {coordinates.map((coord) => (
             <div
-              key={coord.id}
               onClick={() => setSelectedCoord(coord)}
               className="bg-zinc-800/60 border border-zinc-700/80 rounded-3xl p-6 shadow-xl backdrop-blur-sm flex flex-col justify-between hover:border-emerald-500/50 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
             >

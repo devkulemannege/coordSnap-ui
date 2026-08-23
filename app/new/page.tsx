@@ -1,30 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 
+import ErrorModal from "@/components/error_modal";
 import Footer from "@/components/footer";
 
-interface newCoords {
-  username: string;
-  seed: string;
-  name: string;
-  description?: string;
-  x: number;
-  y: number;
-  z: number;
-}
-
-export default function NewCoordinateForm(variables: newCoords) {
+export default function NewCoordinateForm() {
   const [username, setUsername] = useState("guest");
+  const [seed, setSeed] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [dimension, setDiemension] = useState("");
+  const [x, setX] = useState("");
+  const [y, setY] = useState("");
+  const [z, setZ] = useState("");
+
+  const [triggermodal, setTriggerModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalText, setModalText] = useState("");
+
+  let response: AxiosResponse<any, any>; // declare response variable
 
   useEffect(() => {
-    const storedUsername = sessionStorage.getItem("username");
+    const storedUsername = localStorage.getItem("username");
     setUsername(storedUsername || "guest");
   }, []);
 
-  function handleSubmit() {
-    // Placeholder for form submission logic
+  async function handleSubmit(e: FormEvent) {
+    // hande new coordinate data submission to the backend API
+    e.preventDefault();
+
+    try{
+      response = await axios({
+        method: 'POST',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/render`,
+        responseType: 'json',
+        data: {
+          username: username,
+          seed: seed,
+          name: name,
+          description: description,
+          dimension: dimension,
+          x: x,
+          y: y,
+          z: z
+        }
+      })
+
+      if (!response || response.status !== 200) {
+        setModalTitle("Failed to Add Location");
+        setModalText("There was an error while trying to add your new location. Please try again later");
+        setTriggerModal(true);
+      }
+    } catch (error) {
+        setModalTitle("Failed to Add Location");
+        setModalText("There was an error while trying to add your new location. Please try again later");
+        setTriggerModal(true);
+    }
   }
 
   return (
@@ -58,7 +92,8 @@ export default function NewCoordinateForm(variables: newCoords) {
 
       {/* Form Container with Padding */}
       <div className="flex-1 flex items-center justify-center w-full p-4 my-auto py-8">
-        <form className="w-full max-w-lg bg-zinc-900 border border-zinc-700/80 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 text-white">
+        <form className="w-full max-w-lg bg-zinc-900 border border-zinc-700/80 rounded-3xl p-6 md:p-8 shadow-2xl flex flex-col gap-5 text-white"
+          onSubmit={handleSubmit}>
 
           {/* Form Header */}
           <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
@@ -81,6 +116,7 @@ export default function NewCoordinateForm(variables: newCoords) {
                 name="name"
                 required
                 placeholder="e.g. Stronghold Portal"
+                onChange = {(e) => setName(e.target.value)}
                 className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none transition font-mono"
               />
             </div>
@@ -92,6 +128,7 @@ export default function NewCoordinateForm(variables: newCoords) {
               <select
                 id="dimension"
                 name="dimension"
+                onChange = {(e) => setDiemension(e.target.value)}
                 className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-sm text-zinc-200 focus:outline-none transition font-mono cursor-pointer"
               >
                 <option value="Overworld">Overworld</option>
@@ -112,6 +149,7 @@ export default function NewCoordinateForm(variables: newCoords) {
               name="seed"
               required
               placeholder="e.g. -829502948204"
+              onChange = {(e) => setSeed(e.target.value)}
               className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 rounded-xl px-3.5 py-2.5 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none transition font-mono"
             />
           </div>
@@ -129,6 +167,7 @@ export default function NewCoordinateForm(variables: newCoords) {
                   name="x"
                   required
                   defaultValue={0}
+                  onChange = {(e) => setX(e.target.value)}
                   className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-lg p-2 text-center text-sm font-extrabold text-emerald-400 focus:outline-none transition font-mono"
                 />
               </div>
@@ -139,7 +178,8 @@ export default function NewCoordinateForm(variables: newCoords) {
                   type="number"
                   name="y"
                   required
-                  defaultValue={64}
+                  defaultValue={0}
+                  onChange = {(e) => setY(e.target.value)}
                   className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-lg p-2 text-center text-sm font-extrabold text-emerald-400 focus:outline-none transition font-mono"
                 />
               </div>
@@ -151,6 +191,7 @@ export default function NewCoordinateForm(variables: newCoords) {
                   name="z"
                   required
                   defaultValue={0}
+                  onChange = {(e) => setZ(e.target.value)}
                   className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 rounded-lg p-2 text-center text-sm font-extrabold text-emerald-400 focus:outline-none transition font-mono"
                 />
               </div>
@@ -167,6 +208,7 @@ export default function NewCoordinateForm(variables: newCoords) {
               name="description"
               rows={3}
               placeholder="Notes about biome features, chest contents, or surrounding landmarks..."
+              onChange = {(e) => setDescription(e.target.value)}
               className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 rounded-xl p-3 text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none transition font-mono resize-none"
             />
           </div>
@@ -188,6 +230,15 @@ export default function NewCoordinateForm(variables: newCoords) {
           </div>
 
         </form>
+      </div>
+
+      <div>
+        {triggermodal && <
+          ErrorModal 
+          title = {modalTitle}
+          text = {modalText} 
+          onClose = {() => setTriggerModal(false)}
+          />}
       </div>
 
       <Footer />

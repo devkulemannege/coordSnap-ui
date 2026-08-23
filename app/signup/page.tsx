@@ -2,11 +2,15 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import axios, { AxiosResponse } from "axios";
 
 import Footer from "@/components/footer";
 import ErrorModal from "@/components/error_modal";
 
 export default function SignUp() {
+  const router = useRouter(); // create router instance 
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,9 +20,13 @@ export default function SignUp() {
   let [modalTitle, setModalTitle] = useState("");
   let [modalText, setModalText] = useState("");
 
-  function handleSignUp(e: FormEvent) {
+  let response: AxiosResponse<any, any>; // declare response variable
+
+  async function handleSignUp(e: FormEvent) {
     e.preventDefault();
     setErrorMsg("");
+
+    localStorage.clear();
 
     // Basic password validation check
     if (password !== confirmPassword) {
@@ -26,8 +34,30 @@ export default function SignUp() {
       return;
     }
 
-    // API register logic goes here
-  
+    try {
+      response = await axios({
+        method: 'POST',
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/signup`, // to be specified later
+        responseType: 'json',
+        data: {
+          username: username,
+          email: email,
+          password: password
+        }
+      })
+
+      if (!response || response.status !== 200) {
+        setModalTitle("Sign Up Failed");
+        setModalText("There was an error while trying to create your account. Please try again later.");
+        setTriggerModal(true);
+      }
+
+      router.push("/")
+    } catch (error) {
+        setModalTitle("Sign Up Failed");
+        setModalText("There was an error while trying to create your account. Please try again later.");
+        setTriggerModal(true);
+    }
   }
 
   return (

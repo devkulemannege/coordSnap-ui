@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
 
 import Footer from "@/components/footer";
 import CardsRenderer from "@/components/cards_renderer";
@@ -9,6 +10,7 @@ import CardsRenderer from "@/components/cards_renderer";
 export default function Dashboard() {
   interface coordinates {
       id: string,
+      seed: string,
       name: string,
       description? :string,
       dimension: string,
@@ -19,34 +21,26 @@ export default function Dashboard() {
   }
 
   const [coordinateArray, setCoordinateArray] = useState<coordinates[]>([]);
+  const [username, setUsername] = useState("");
 
-  // test data 
   // useEffect runs code after rendering is completed on client side
   useEffect(() => {
-      setCoordinateArray([
-      {
-          id: "1a",
-          name: "Base",
-          description: "Spawn Base",
-          dimension: "Overworld",
-          x: 500,
-          y: 40,
-          z: 782
-      },
-      {
-          id: "2a",
-          name: "Village",
-          description: "Nearby village",
-          dimension: "Overworld",
-          x: 800,
-          y: 70,
-          z: 1200
+    async function getCoords() {
+      try {
+        let response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/coords`, {
+          params: {
+            username: localStorage.getItem("username")
+          }
+        });
+        setCoordinateArray(response.data.coordinates)
+      } catch (error) {
+        console.log('An error occured trying to retireve coordinate data: ', error)
       }
-  ]);
+    }
+    getCoords();
+    
+    setUsername(localStorage.getItem("username") || "")
   }, []);
-
-  // Example user state (this can later be fetched from your auth context or backend)
-  const [username, setUsername] = useState("Steve");
 
   return (
     <div className="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-zinc-950">
