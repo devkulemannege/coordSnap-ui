@@ -9,7 +9,6 @@ import CardsRenderer from "@/components/cards_renderer";
 
 export default function Dashboard() {
   interface coordinates {
-      id: string,
       seed: string,
       name: string,
       description? :string,
@@ -17,7 +16,7 @@ export default function Dashboard() {
       x: number,
       y: number,
       z: number,
-      image?: number
+      img_base64_str?: string
   }
 
   const [coordinateArray, setCoordinateArray] = useState<coordinates[]>([]);

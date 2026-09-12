@@ -137,7 +137,7 @@ export default function Home() {
               href="/signup"
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline transition font-mono"
             >
-              New here? Sign in
+              New here? Sign up
             </Link>
           </div>
 

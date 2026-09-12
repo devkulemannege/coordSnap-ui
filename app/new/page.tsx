@@ -2,10 +2,13 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import ErrorModal from "@/components/error_modal";
+import SuccessModal from "@/components/success_modal";
 import Footer from "@/components/footer";
+import { Router } from "next/router";
 
 export default function NewCoordinateForm() {
   const [username, setUsername] = useState("guest");
@@ -17,9 +20,12 @@ export default function NewCoordinateForm() {
   const [y, setY] = useState("");
   const [z, setZ] = useState("");
 
-  const [triggermodal, setTriggerModal] = useState(false);
+  const [triggerErrormodal, setTriggerErrorModal] = useState(false);
+  const [triggerSuccessmodal, setTriggerSuccessModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalText, setModalText] = useState("");
+
+  const router = useRouter(); // create router instance 
 
   let response: AxiosResponse<any, any>; // declare response variable
 
@@ -52,12 +58,16 @@ export default function NewCoordinateForm() {
       if (!response || response.status !== 200) {
         setModalTitle("Failed to Add Location");
         setModalText("There was an error while trying to add your new location. Please try again later");
-        setTriggerModal(true);
+        setTriggerErrorModal(true);
+      } else {
+        setModalTitle("Successfully Added Location");
+        setModalText("Your new location has been successfully added to the database.");
+        setTriggerSuccessModal(true);
       }
     } catch (error) {
         setModalTitle("Failed to Add Location");
         setModalText("There was an error while trying to add your new location. Please try again later");
-        setTriggerModal(true);
+        setTriggerErrorModal(true);
     }
   }
 
@@ -233,12 +243,17 @@ export default function NewCoordinateForm() {
       </div>
 
       <div>
-        {triggermodal && <
+        {triggerErrormodal && <
           ErrorModal 
           title = {modalTitle}
           text = {modalText} 
-          onClose = {() => setTriggerModal(false)}
-          />}
+          onClose = {() => setTriggerErrorModal(false)}/>}
+
+        {triggerSuccessmodal && <
+          SuccessModal
+          title = {modalTitle}
+          text = {modalText}
+          onClose = {() => {setTriggerSuccessModal(false); router.push('/dashboard')}}/>}
       </div>
 
       <Footer />

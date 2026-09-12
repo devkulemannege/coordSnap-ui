@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface coordinates {
-    id: string
     seed: string,
     name: string,
     description? :string,
@@ -12,7 +11,7 @@ interface coordinates {
     x: number,
     y: number,
     z: number,
-    image?: number
+    img_base64_str?: string
 }
 
 interface CardsRendererProps {
@@ -182,9 +181,9 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
 
             {/* Image Preview Container */}
             <div className="w-full h-48 rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center relative">
-              {selectedCoord.image ? (
+              {selectedCoord.img_base64_str ? (
                 <img
-                  src={`/api/images/${selectedCoord.image}`} // Replace with your actual image route or static path logic
+                  src={`data:image/png;base64,${selectedCoord.img_base64_str}`} // Replace with your actual image route or static path logic
                   alt={selectedCoord.name}
                   className="w-full h-full object-cover"
                 />
