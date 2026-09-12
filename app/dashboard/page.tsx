@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 
 import Footer from "@/components/footer";
 import CardsRenderer from "@/components/cards_renderer";
+import DashboardHeader from "@/components/dashboard_header";
 
 export default function Dashboard() {
   interface coordinates {
@@ -42,37 +42,20 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-zinc-950">
+    <div className="min-h-screen text-zinc-100 flex flex-col font-sans">
       
-      {/* 1. Top Navigation Bar */}
-      <header className="w-full h-16 border-b border-zinc-800 bg-zinc-900/90 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-50">
-        
-        {/* Left: Website Logo & Name */}
-        <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-mono font-black text-lg shadow-sm">
-            📸
-          </div>
-          <span className="font-extrabold text-xl tracking-tight text-white">
-            Coord<span className="text-emerald-400">Snap</span>
-          </span>
-        </Link>
-
-        {/* Right: Logged-in Username Badge */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-zinc-800/80 border border-zinc-700/80 shadow-sm">
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-mono font-bold text-xs">
-              {username.charAt(0).toUpperCase()}
-            </div>
-            <span className="text-xs font-bold text-zinc-200 font-mono">
-              {username}
-            </span>
-          </div>
-        </div>
-
-      </header>
+      <DashboardHeader username={username} />
 
       {/* 2. Main Dashboard Area */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 flex flex-col items-center justify-center">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-5 py-10 sm:px-8">
+        <div className="mb-8 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-mono font-bold uppercase tracking-[0.2em] text-emerald-400/80">Your collection</p>
+            <h1 className="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-white">Coordinate vault</h1>
+            <p className="mt-2 text-sm text-zinc-500">Keep every important Minecraft location within reach.</p>
+          </div>
+          <span className="hidden sm:block rounded-full border border-white/10 bg-zinc-900/70 px-3 py-1.5 text-[11px] font-mono text-zinc-500">SYNCED</span>
+        </div>
         <CardsRenderer coordinates={coordinateArray}/>
       </main>
 

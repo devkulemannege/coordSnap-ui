@@ -35,9 +35,9 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
           <button
             type="button"
             onClick={handleAddNew}
-            className="group min-h-55 bg-zinc-800/30 hover:bg-zinc-800/60 border-2 border-dashed border-zinc-700/80 hover:border-emerald-500/60 rounded-3xl p-6 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer"
+            className="group min-h-55 bg-emerald-400/[0.03] hover:bg-emerald-400/[0.07] border border-dashed border-emerald-400/25 hover:border-emerald-400/60 rounded-xl p-6 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer"
           >
-            <div className="w-12 h-12 rounded-2xl bg-zinc-800 group-hover:bg-emerald-500/10 border border-zinc-700/80 group-hover:border-emerald-500/30 text-zinc-400 group-hover:text-emerald-400 flex items-center justify-center text-xl transition mb-3">
+            <div className="w-12 h-12 rounded-xl bg-zinc-900 group-hover:bg-emerald-400/10 border border-white/10 group-hover:border-emerald-400/30 text-zinc-400 group-hover:text-emerald-300 flex items-center justify-center text-xl transition mb-3">
               +
             </div>
             <span className="font-bold text-sm text-zinc-300 group-hover:text-white transition">
@@ -52,7 +52,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
           {coordinates.map((coord) => (
             <div
               onClick={() => setSelectedCoord(coord)}
-              className="bg-zinc-800/60 border border-zinc-700/80 rounded-3xl p-6 shadow-xl backdrop-blur-sm flex flex-col justify-between hover:border-emerald-500/50 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+              className="bg-zinc-900/65 border border-white/10 rounded-xl p-6 shadow-[0_16px_45px_rgba(0,0,0,0.2)] backdrop-blur-xl flex flex-col justify-between hover:border-emerald-400/45 hover:-translate-y-1 transition-all cursor-pointer active:scale-[0.99]"
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-3">
@@ -80,7 +80,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
               </div>
 
               {/* XYZ Values Display */}
-              <div className="grid grid-cols-3 gap-2 bg-zinc-900/80 border border-zinc-700/60 rounded-2xl p-3 text-center font-mono">
+              <div className="grid grid-cols-3 gap-2 bg-zinc-950/70 border border-white/10 rounded-xl p-3 text-center font-mono">
                 <div>
                   <span className="text-[10px] font-bold text-zinc-500 block uppercase">
                     X
@@ -110,9 +110,9 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
           ))}
         </div>
       ) : (
-        <div className="w-full min-h-125 bg-zinc-800/60 border border-zinc-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden flex flex-col items-center justify-center text-center">
+        <div className="w-full min-h-125 bg-zinc-900/65 border border-white/10 rounded-xl p-8 shadow-[0_24px_90px_rgba(0,0,0,0.3)] backdrop-blur-xl relative overflow-hidden flex flex-col items-center justify-center text-center">
           <div className="max-w-md space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
+            <div className="w-16 h-16 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto shadow-inner">
               📍
             </div>
 
@@ -128,7 +128,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
               <button
                 type="button"
                 onClick={handleAddNew}
-                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs rounded-2xl transition shadow-lg shadow-emerald-500/20 active:scale-[0.98] cursor-pointer"
+                className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs rounded-lg transition shadow-lg shadow-emerald-500/20 active:scale-[0.98] cursor-pointer"
               >
                 + Add New Coordinates
               </button>
@@ -147,7 +147,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
             onClick={() => setSelectedCoord(null)} 
           />
 
-          <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-700/80 rounded-3xl p-6 md:p-8 shadow-2xl overflow-hidden z-10 flex flex-col gap-6">
+          <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-700/80 rounded-xl p-6 md:p-8 shadow-2xl overflow-hidden z-10 flex flex-col gap-6">
             
             {/* Modal Header & Close Button */}
             <div className="flex items-start justify-between gap-4">
@@ -173,14 +173,14 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
               <button
                 type="button"
                 onClick={() => setSelectedCoord(null)}
-                className="w-9 h-9 rounded-xl bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center transition font-mono font-bold text-sm cursor-pointer"
+                className="w-9 h-9 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center transition font-mono font-bold text-sm cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Image Preview Container */}
-            <div className="w-full h-48 rounded-2xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center relative">
+            <div className="w-full h-48 rounded-xl bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center relative">
               {selectedCoord.img_base64_str ? (
                 <img
                   src={`data:image/png;base64,${selectedCoord.img_base64_str}`} // Replace with your actual image route or static path logic
@@ -196,7 +196,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
             </div>
 
             {/* Detailed XYZ Coordinates */}
-            <div className="grid grid-cols-3 gap-3 bg-zinc-950/80 border border-zinc-800 rounded-2xl p-4 text-center font-mono">
+            <div className="grid grid-cols-3 gap-3 bg-zinc-950/80 border border-zinc-800 rounded-xl p-4 text-center font-mono">
               <div>
                 <span className="text-[11px] font-bold text-zinc-500 block uppercase">
                   X Coordinate
@@ -229,7 +229,7 @@ export default function CardsRenderer({ coordinates }: CardsRendererProps) {
                 <h4 className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 font-mono">
                   Description
                 </h4>
-                <p className="text-sm text-zinc-300 font-mono leading-relaxed bg-zinc-950/40 p-4 rounded-2xl border border-zinc-800/60">
+                <p className="text-sm text-zinc-300 font-mono leading-relaxed bg-zinc-950/40 p-4 rounded-xl border border-zinc-800/60">
                   {selectedCoord.description}
                 </p>
               </div>

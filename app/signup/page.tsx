@@ -7,6 +7,8 @@ import axios, { AxiosResponse } from "axios";
 
 import Footer from "@/components/footer";
 import ErrorModal from "@/components/error_modal";
+import LoadingModal from "@/components/loading_modal";
+import AuthHeader from "@/components/login_header";
 
 export default function SignUp() {
   const router = useRouter(); // create router instance 
@@ -17,6 +19,7 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [triggermodal, setTriggerModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   let [modalTitle, setModalTitle] = useState("");
   let [modalText, setModalText] = useState("");
 
@@ -34,6 +37,8 @@ export default function SignUp() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       response = await axios({
         method: 'POST',
@@ -47,13 +52,16 @@ export default function SignUp() {
       })
 
       if (!response || response.status !== 200) {
+        setIsLoading(false);
         setModalTitle("Sign Up Failed");
         setModalText("There was an error while trying to create your account. Please try again later.");
         setTriggerModal(true);
       }
 
+      setIsLoading(false);
       router.push("/")
     } catch (error) {
+        setIsLoading(false);
         setModalTitle("Sign Up Failed");
         setModalText("There was an error while trying to create your account. Please try again later.");
         setTriggerModal(true);
@@ -61,38 +69,28 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-zinc-950">
+    <div className="min-h-screen text-zinc-100 flex flex-col font-sans">
       
-      {/* 1. Top Navigation Bar */}
-      <header className="w-full h-16 border-b border-zinc-800 bg-zinc-900/90 backdrop-blur-md px-6 flex items-center justify-center sticky top-0 z-50">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-mono font-black text-lg shadow-sm">
-            📸
-          </div>
-          <span className="font-extrabold text-xl tracking-tight text-white">
-            Coord<span className="text-emerald-400">Snap</span>
-          </span>
-        </Link>
-      </header>
+      <AuthHeader linkHome />
 
       {/* 2. Centered Register Card */}
-      <main className="flex-1 w-full max-w-7xl mx-auto p-6 flex flex-col items-center justify-center">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-5 py-10 sm:px-8 flex flex-col items-center justify-center">
         
-        <div className="w-full max-w-md bg-zinc-800/60 border border-zinc-700/80 rounded-3xl p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden my-6">
+        <div className="w-full max-w-md bg-zinc-900/65 border border-white/10 rounded-xl p-7 sm:p-9 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl relative overflow-hidden my-6">
 
           {/* Header */}
           <div className="text-center mb-8 pt-2">
-            <h1 className="text-2xl font-black text-white tracking-tight">
+            <h1 className="text-3xl font-black text-white tracking-tight">
               Create an Account
             </h1>
-            <p className="text-xs font-medium text-zinc-400 mt-1 font-mono">
+            <p className="text-sm font-medium text-zinc-500 mt-2 font-mono">
               Join to save and share your world coordinates
             </p>
           </div>
 
           {/* Inline Error Notice */}
           {errorMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono text-center">
+            <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-mono text-center">
               {errorMsg}
             </div>
           )}
@@ -112,7 +110,7 @@ export default function SignUp() {
                 id="username"
                 type="text"
                 placeholder="Steve"
-                className="w-full px-4 py-3 rounded-2xl bg-zinc-900 border border-zinc-700/80 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-medium transition"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-950/80 border border-white/10 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 font-medium transition"
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
@@ -130,7 +128,7 @@ export default function SignUp() {
                 id="email"
                 type="email"
                 placeholder="steve@minecraft.net"
-                className="w-full px-4 py-3 rounded-2xl bg-zinc-900 border border-zinc-700/80 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-medium transition"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-950/80 border border-white/10 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 font-medium transition"
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -148,7 +146,7 @@ export default function SignUp() {
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-2xl bg-zinc-900 border border-zinc-700/80 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-medium transition"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-950/80 border border-white/10 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 font-medium transition"
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
@@ -166,7 +164,7 @@ export default function SignUp() {
                 id="confirmPassword"
                 type="password"
                 placeholder="••••••••"
-                className="w-full px-4 py-3 rounded-2xl bg-zinc-900 border border-zinc-700/80 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 font-medium transition"
+                className="w-full px-4 py-3 rounded-lg bg-zinc-950/80 border border-white/10 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-emerald-400 focus:ring-4 focus:ring-emerald-400/10 font-medium transition"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
@@ -175,7 +173,7 @@ export default function SignUp() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-sm rounded-2xl transition shadow-lg shadow-emerald-500/20 active:scale-[0.98] mt-2 cursor-pointer"
+              className="w-full py-3.5 bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-bold text-sm rounded-lg transition shadow-[0_10px_28px_rgba(52,211,153,0.18)] active:scale-[0.98] mt-3 cursor-pointer"
             >
               Create Account
             </button>
@@ -198,6 +196,7 @@ export default function SignUp() {
 
       {/* modal */}
       <div>
+        {isLoading && <LoadingModal />}
         {triggermodal && <
           ErrorModal 
           title = {modalTitle}

@@ -2,12 +2,12 @@
 
 export default function Footer() {
     return (
-      <footer className="w-full border-t border-zinc-800 bg-zinc-900/90 py-6 px-4">
+      <footer className="w-full border-t border-white/5 bg-zinc-950/50 py-7 px-4">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center text-center gap-3">
           
           {/* Copyright */}
           <p className="text-xs font-semibold text-zinc-400 font-mono">
-            CoordSnap 2026, all rights reserved
+            <span className="text-zinc-400">Coord</span>Snap <span className="text-zinc-600">/</span> 2026
           </p>
 
           {/* Links */}
