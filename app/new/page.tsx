@@ -64,8 +64,8 @@ export default function NewCoordinateForm() {
         setTriggerErrorModal(true);
       } else {
         setIsLoading(false);
-        setModalTitle("Successfully Added Location");
-        setModalText("Your new location has been successfully added to the database.");
+        setModalTitle("Coordinates Added to Queue");
+        setModalText("Your coordinates will be displayed on the dashboard soon");
         setTriggerSuccessModal(true);
       }
     } catch (error) {
